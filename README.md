@@ -25,3 +25,9 @@
 > > > > > ![til](progress/s5.PNG)
 
 > > > > > ![til](progress/s6.PNG)
+
+> > > > > ![til](progress/s7.PNG)
+
+> > > > > ![til](progress/s8.PNG)
+
+> > > > > ![til](progress/s9.PNG)
