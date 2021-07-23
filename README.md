@@ -31,3 +31,11 @@
 > > > > > ![til](progress/s8.PNG)
 
 > > > > > ![til](progress/s9.PNG)
+
+> > > > > ![til](progress/s10.PNG)
+
+> > > > > ![til](progress/s13.PNG)
+
+> > > > > ![til](progress/s11.PNG)
+
+> > > > > ![til](progress/s12.PNG)
