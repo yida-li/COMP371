@@ -14,28 +14,28 @@
 
 # Progress
 
-> > > > > ![til](progress/s2.PNG)
+> > > > > ![til](phaseAlpha/progress/s2.PNG)
 
-> > > > > ![til](progress/s1.PNG)
+> > > > > ![til](phaseAlpha/progress/s1.PNG)
 
-> > > > > ![til](progress/s3.PNG)
+> > > > > ![til](phaseAlpha/progress/s3.PNG)
 
-> > > > > ![til](progress/s4.PNG)
+> > > > > ![til](phaseAlpha/progress/s4.PNG)
 
-> > > > > ![til](progress/s5.PNG)
+> > > > > ![til](phaseAlpha/progress/s5.PNG)
 
-> > > > > ![til](progress/s6.PNG)
+> > > > > ![til](phaseAlpha/progress/s6.PNG)
 
-> > > > > ![til](progress/s7.PNG)
+> > > > > ![til](phaseAlpha/progress/s7.PNG)
 
-> > > > > ![til](progress/s8.PNG)
+> > > > > ![til](phaseAlpha/progress/s8.PNG)
 
-> > > > > ![til](progress/s9.PNG)
+> > > > > ![til](phaseAlpha/progress/s9.PNG)
 
-> > > > > ![til](progress/s10.PNG)
+> > > > > ![til](phaseAlpha/progress/s10.PNG)
 
-> > > > > ![til](progress/s13.PNG)
+> > > > > ![til](phaseAlpha/progress/s13.PNG)
 
-> > > > > ![til](progress/s11.PNG)
+> > > > > ![til](phaseAlpha/progress/s11.PNG)
 
-> > > > > ![til](progress/s12.PNG)
+> > > > > ![til](phaseAlpha/progress/s12.PNG)
