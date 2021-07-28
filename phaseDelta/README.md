@@ -1,41 +1,29 @@
-# COMP371
-
-# Requirements
-
-> > IDE : Visual Studio 2019+
-
-> > GLAD : Multi-Language GL/GLES/EGL/GLX/WGL Loader-Generator
-
-> > GLFW : Graphics Library Framework
-
-> > GLEW : Efficient run-time Loader
-
-> > Programming Language : C++
+# Online Book : https://learnopengl.com/
 
 # Progress
 
-> > > > > ![til](phaseAlpha/progress/s2.PNG)
+> > > > > ![til](progress/d1.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s1.PNG)
+> > > > > ![til](progress/d2.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s3.PNG)
+> > > > > ![til](progress/d3.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s4.PNG)
+> > > > > ![til](progress/d4.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s5.PNG)
+> > > > > ![til](progress/d5.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s6.PNG)
+> > > > > ![til](progress/d6.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s7.PNG)
+> > > > > ![til](progress/d7.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s8.PNG)
+> > > > > ![til](progress/d8.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s9.PNG)
+> > > > > ![til](progress/d9.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s10.PNG)
+> > > > > ![til](progress/d10.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s13.PNG)
+> > > > > ![til](progress/d11.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s11.PNG)
+> > > > > ![til](progress/d12.PNG)
 
-> > > > > ![til](phaseAlpha/progress/s12.PNG)
+> > > > > ![til](progress/d13.PNG)

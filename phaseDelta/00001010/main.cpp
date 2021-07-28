@@ -1,8 +1,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "shader.cpp"
 #include <iostream>
+// also stuff from delta 9 which are from delta 8 which are from somewhere else
 using namespace std;
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -20,13 +24,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    // glfw window creation
-    // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Delta 8", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Delta 10 rotation", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -36,27 +34,22 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
-    // build and compile our shader program
-    // ------------------------------------
-    Shader ourShader("vertex.shader", "fragment.shader"); // you can name your shader files however you like
+    Shader ourShader("vertex.shader", "fragment.shader");
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float vertices[] = {
         // positions          // colors           // texture coords
-        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-        -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
+        0.5f, 0.5f, 0.0f, 0.89f, 0.51f, 0.51f, 1.0f, 1.0f,     // top right
+        0.5f, -0.5f, 0.0f, 0.4f, 0.65f, 0.701f, 1.0f, 0.0f,    // bottom right
+        -0.5f, -0.5f, 0.0f, 0.949f, 0.858f, 0.03f, 0.0f, 0.0f, // bottom left
+        -0.5f, 0.5f, 0.0f, 0.68f, 0.78f, 0.67f, 0.0f, 1.0f     // top left
     };
+
     unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
@@ -84,11 +77,9 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // load and create a texture
-    // -------------------------
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    unsigned int texture1, texture2;
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -97,7 +88,9 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("tinycontainer.jpg", &width, &height, &nrChannels, 0);
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    unsigned char *data = stbi_load("kitty.jpeg", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -108,6 +101,38 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    // texture 2
+    // ---------
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+
+    if (data)
+    {
+        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+    // -------------------------------------------------------------------------------------------
+    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    // either set it manually like so:
+    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+    // or set it via the texture class
+    ourShader.setInt("texture2", 1);
 
     // render loop
     // -----------
@@ -119,14 +144,31 @@ int main()
 
         // render
         // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.92f, 0.971f, 0.403f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // bind Texture
-        glBindTexture(GL_TEXTURE_2D, texture);
-
-        // render container
+        // bind textures on corresponding texture units
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
         ourShader.use();
+
+        // create transformations
+
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, 0.0f));
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        /*
+       *  glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f)); 
+        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f)); 
+       */
+
+        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -135,7 +177,6 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
@@ -171,7 +212,7 @@ void processInput(GLFWwindow *window)
     {
         stbi_set_flip_vertically_on_load(true);
         int width, height, nrChannels;
-        unsigned char *data = stbi_load("kitty.jpeg", &width, &height, &nrChannels, 0);
+        unsigned char *data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
         if (data)
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);

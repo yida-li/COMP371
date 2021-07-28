@@ -1,4 +1,4 @@
-# COMP371
+# CLOSED GOOD LUCK
 
 # Requirements
 
